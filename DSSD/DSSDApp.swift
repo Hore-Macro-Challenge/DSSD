@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct DSSDApp: App {
+    @AppStorage("character") var character: String = ""
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if character == "girl" || character == "boy"{
+                secondView()
+            } else{
+                firstView()
+            }
         }
     }
 }
