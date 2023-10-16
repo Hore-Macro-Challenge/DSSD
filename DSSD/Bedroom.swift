@@ -16,6 +16,7 @@ struct Bedroom: View {
     @State private var yOffset = 0
     @State private var alarmTap = false
     @State private var lampTap = false
+    @State private var curtainTap = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -38,10 +39,12 @@ struct Bedroom: View {
                         Button{
                             if animation == 1.0 {
                                 animation += 3
+                                lampTap = true
                                 xOffset = Int(size.width/1.1)
                                 yOffset = Int(size.height/1.85)
                             } else {
                                 animation -= 3
+                                lampTap = false
                                 xOffset = 0
                                 yOffset = 0
                             }
@@ -52,17 +55,19 @@ struct Bedroom: View {
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                             
                         }
-                        .disabled(opacity != 0.6)
+                        .disabled(opacity != 0.6 || alarmTap || curtainTap)
                     }
                     .position(x: size.width/3.7, y: size.height/2.8)
                     VStack{
                         Button{
                             if animation == 1.0 {
                                 animation += 4
+                                alarmTap = true
                                 xOffset = Int((size.width/2) * -1)
                                 yOffset = Int(size.height/2)
                             } else {
                                 animation -= 4
+                                alarmTap = false
                                 xOffset = 0
                                 yOffset = 0
                             }
@@ -72,7 +77,7 @@ struct Bedroom: View {
                                 .frame(width: size.width/10, height: size.height/10)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                         }
-                        .disabled(opacity != 0.6)
+                        .disabled(opacity != 0.6 || lampTap || curtainTap)
                     }
                     .position(x: size.width/1.66, y: size.height/2.5)
                     VStack{
@@ -97,15 +102,17 @@ struct Bedroom: View {
                     .onTapGesture {
                         if animation == 1.0 {
                             animation += 0.7
+                            curtainTap = true
                             xOffset = Int((size.width/2) * -1)
                             yOffset = Int(size.height/4.5)
                         } else {
                             animation -= 0.7
+                            curtainTap = false
                             xOffset = 0
                             yOffset = 0
                         }
                     }
-                    .disabled(opacity != 0.6)
+                    .disabled(opacity != 0.6 || lampTap || alarmTap)
                 }
                 .scaleEffect(animation)
                 .offset(x: CGFloat(xOffset), y: CGFloat(yOffset))
