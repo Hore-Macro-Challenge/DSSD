@@ -10,9 +10,9 @@ import SwiftUI
 
 class StoryViewModel: ObservableObject {
     @Published var stories: [Story] = [
-        Story(id: 1, text: "Ini story 111", timeRemaining: 10),
-        Story(id: 2, text: "Ini story 222", timeRemaining: 5),
-        Story(id: 3, text: "SELESAIII", timeRemaining: 5)
+        Story(id: 1, text: "MATIKAN ALARM"),
+        Story(id: 2, text: "Ini story 222"),
+        Story(id: 3, text: "SELESAIII")
     ]
     
     @Published var currentIndex: Int = 0
@@ -28,6 +28,4 @@ class StoryViewModel: ObservableObject {
             currentIndex += 1
         }
     }
-
-    
 }

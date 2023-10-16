@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct StoryView: View {
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @StateObject private var viewModel = StoryViewModel()
-    @State private var timeRemaining: Double = 10
     
     var body: some View {
         GeometryReader { geometry in
@@ -19,20 +17,13 @@ struct StoryView: View {
                 size: size,
                 text: viewModel.getCurrentStory().text)
         }
-        .onReceive(timer) { _ in
-            if viewModel.stories[viewModel.currentIndex].timeRemaining <= 1 {
-                viewModel.moveToNextStory()
-            } else {
-                viewModel.stories[viewModel.currentIndex].timeRemaining -= 1
-            }
-        }
     }
     
     func storyOneView(size: CGSize, text: String) -> some View {
         ZStack(alignment: .leading){
             Rectangle()
                 .foregroundColor(.black)
-                .frame(width: size.width - (size.width/6), height: size.height - (size.height/1.15))
+                .frame(width: size.width - (size.width/4), height: size.height - (size.height/1.15))
                 .background(Color(red: 0.9, green: 0.9, blue: 0.9))
                 .cornerRadius(13)
                 .background(RoundedRectangle(cornerRadius: 13, style: .continuous)

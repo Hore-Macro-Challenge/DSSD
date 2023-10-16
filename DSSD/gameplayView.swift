@@ -9,9 +9,10 @@ import SwiftUI
 
 struct gameplayView: View {
     @State private var gameplay = ""
+    @State var endStory = false
     var body: some View {
         if gameplay == "story"{
-            storybedroomView()
+            Bedroom()
         } else if gameplay == "freeplay"{
             
         } else {
@@ -41,6 +42,6 @@ struct gameplayView: View {
     }
 }
 
-#Preview {
-    gameplayView()
-}
+//#Preview {
+//    gameplayView()
+//}

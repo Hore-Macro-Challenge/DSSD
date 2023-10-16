@@ -10,5 +10,4 @@ import Foundation
 struct Story {
     var id: Int
     var text: String
-    var timeRemaining: Double
 }
