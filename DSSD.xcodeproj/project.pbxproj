@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B6692AE2ADD713F0025BB70 /* ComicSansMS-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B6692AC2ADD713F0025BB70 /* ComicSansMS-Bold.ttf */; };
+		0B6692AF2ADD713F0025BB70 /* ComicSansMS-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B6692AD2ADD713F0025BB70 /* ComicSansMS-Regular.ttf */; };
 		0BF71D7D2AD8D1C000805C38 /* DSSDApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF71D7C2AD8D1C000805C38 /* DSSDApp.swift */; };
 		0BF71D7F2AD8D1C000805C38 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF71D7E2AD8D1C000805C38 /* ContentView.swift */; };
 		0BF71D812AD8D1C100805C38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BF71D802AD8D1C100805C38 /* Assets.xcassets */; };
@@ -22,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B6692AA2ADD70DB0025BB70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0B6692AC2ADD713F0025BB70 /* ComicSansMS-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicSansMS-Bold.ttf"; sourceTree = "<group>"; };
+		0B6692AD2ADD713F0025BB70 /* ComicSansMS-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ComicSansMS-Regular.ttf"; sourceTree = "<group>"; };
 		0BF71D792AD8D1C000805C38 /* DSSD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DSSD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF71D7C2AD8D1C000805C38 /* DSSDApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSSDApp.swift; sourceTree = "<group>"; };
 		0BF71D7E2AD8D1C000805C38 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +53,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B6692AB2ADD70E80025BB70 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				0B6692AC2ADD713F0025BB70 /* ComicSansMS-Bold.ttf */,
+				0B6692AD2ADD713F0025BB70 /* ComicSansMS-Regular.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		0BF71D702AD8D1C000805C38 = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +81,8 @@
 		0BF71D7B2AD8D1C000805C38 /* DSSD */ = {
 			isa = PBXGroup;
 			children = (
+				0B6692AB2ADD70E80025BB70 /* Font */,
+				0B6692AA2ADD70DB0025BB70 /* Info.plist */,
 				0BF71D912AD91F5700805C38 /* Model */,
 				0BF71D8C2AD8E47600805C38 /* Component */,
 				0BF71D7C2AD8D1C000805C38 /* DSSDApp.swift */,
@@ -165,6 +181,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B6692AE2ADD713F0025BB70 /* ComicSansMS-Bold.ttf in Resources */,
+				0B6692AF2ADD713F0025BB70 /* ComicSansMS-Regular.ttf in Resources */,
 				0BF71D842AD8D1C100805C38 /* Preview Assets.xcassets in Resources */,
 				0BF71D812AD8D1C100805C38 /* Assets.xcassets in Resources */,
 			);
@@ -318,6 +336,7 @@
 				DEVELOPMENT_TEAM = S398LUTY9A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DSSD/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -347,6 +366,7 @@
 				DEVELOPMENT_TEAM = S398LUTY9A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DSSD/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

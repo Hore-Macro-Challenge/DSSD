@@ -34,7 +34,7 @@ struct StoryView: View {
                 .position(x: size.width/6, y: size.height/1.1)
             Text(text)
                 .foregroundColor(.black)
-                .font(.title)
+                .font(.custom("ComicSansMS-Bold", size: 20))
                 .position(x: size.width/2, y: size.height/1.12)
         }
     }
