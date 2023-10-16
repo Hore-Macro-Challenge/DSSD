@@ -12,60 +12,109 @@ struct Bedroom: View {
     @State private var timeRemaining: Double = 5
     @State private var opacity = 0.0
     @State private var animation = 1.0
-    @State private var anchorPoint = UnitPoint(x: 0, y: 0)
+    @State private var xOffset = 0
+    @State private var yOffset = 0
     @State private var alarmTap = false
-    let focusPoint = CGPoint(x: 100, y: 100)
+    @State private var lampTap = false
     
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
             ZStack{
-                Image("bedroom")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: size.width, height: size.height)
-                
-                
-                Rectangle().opacity(opacity)
-                    .onReceive(timer) { _ in
-                        timeRemaining -= 1
-                        if timeRemaining <= 1 {
-                            timeRemaining = 0
-                            opacity = 0.6
-                        }
-                    }
-                StoryView()
                 ZStack{
-                    //                    Image("light").resizable()
-                    //                        .frame(width: size.width/6, height: size.height/3.1)
-                    //                        .offset(x:size.width/238.8,y: size.height/18)
-                    Button{
-                        alarmTap.toggle()
-                        if alarmTap{
-                            animation += 5
-                        } else {
-                            animation -= 5
+                    Image("bedroom")
+                        .resizable()
+                    //                        .aspectRatio(contentMode: .fill)
+                        .frame(width: size.width, height: size.height)
+                    Rectangle().opacity(opacity)
+                        .onReceive(timer) { _ in
+                            timeRemaining -= 1
+                            if timeRemaining <= 1 {
+                                timeRemaining = 0
+                                opacity = 0.6
+                            }
                         }
-//                        anchorPoint = UnitPoint(x: 0.84, y: 0.65)
-                    } label : {
-                        Image("clock")
-                            .resizable()
-                            .frame(width: size.width/10, height: size.height/10)
-                            .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
-//                            .scaleEffect(animation, anchor: .trailing)
-//                            .animation(
-//                                .easeInOut(duration: 1.5),
-//                                value: animation)
-                        
+                    VStack{
+                        Button{
+                            if animation == 1.0 {
+                                animation += 3
+                                xOffset = Int(size.width/1.1)
+                                yOffset = Int(size.height/1.85)
+                            } else {
+                                animation -= 3
+                                xOffset = 0
+                                yOffset = 0
+                            }
+                        } label : {
+                            Image("lamp_on")
+                                .resizable()
+                                .frame(width: size.width/7, height: size.height/3)
+                                .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            
+                        }
+                        .disabled(opacity != 0.6)
                     }
+                    .position(x: size.width/3.7, y: size.height/2.8)
+                    VStack{
+                        Button{
+                            if animation == 1.0 {
+                                animation += 4
+                                xOffset = Int((size.width/2) * -1)
+                                yOffset = Int(size.height/2)
+                            } else {
+                                animation -= 4
+                                xOffset = 0
+                                yOffset = 0
+                            }
+                        } label : {
+                            Image("clock")
+                                .resizable()
+                                .frame(width: size.width/10, height: size.height/10)
+                                .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                        }
+                        .disabled(opacity != 0.6)
+                    }
+                    .position(x: size.width/1.66, y: size.height/2.5)
+                    VStack{
+                        Image("window")
+                            .resizable()
+                            .frame(width: size.width/4.3, height: size.height/3.5)
+                            .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            .position(x: size.width/1.2, y: size.height/3.2)
+                        Image("trail")
+                            .resizable()
+                            .frame(width: size.width/4, height: (size.height - size.height/1.03))
+                            .position(x: size.width/1.19, y: (size.height - size.height/0.91))
+                        Image("curtain_left")
+                            .resizable()
+                            .frame(width: size.width/10, height: size.height/2.35)
+                            .position(x: size.width/1.29, y: (size.height - size.height/0.86))
+                        Image("curtain_right")
+                            .resizable()
+                            .frame(width: size.width/10, height: size.height/2.35)
+                            .position(x: size.width/1.12, y: (size.height - size.height/0.706))
+                    }
+                    .onTapGesture {
+                        if animation == 1.0 {
+                            animation += 0.7
+                            xOffset = Int((size.width/2) * -1)
+                            yOffset = Int(size.height/4.5)
+                        } else {
+                            animation -= 0.7
+                            xOffset = 0
+                            yOffset = 0
+                        }
+                    }
+                    .disabled(opacity != 0.6)
                 }
-                .position(x: size.width/1.28, y: size.height/1.58)
+                .scaleEffect(animation)
+                .offset(x: CGFloat(xOffset), y: CGFloat(yOffset))
+                .animation(
+                    .easeInOut(duration: 1.5),
+                    value: animation)
             }
-            .scaleEffect(alarmTap ? animation : 1)
-            .offset(x: alarmTap ? -2000 : 0, y: alarmTap ? -650 : 0)
-            .animation(
-                .easeInOut(duration: 1.5),
-                value: animation)
+            
+            StoryView()
         }.ignoresSafeArea()
     }
 }
