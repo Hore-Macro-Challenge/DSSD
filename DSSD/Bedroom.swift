@@ -61,7 +61,8 @@ struct Bedroom: View {
                 }
                 .position(x: size.width/1.28, y: size.height/1.58)
             }
-            .scaleEffect(alarmTap ? animation : 1, anchor: UnitPoint(x: 0.84, y: 0.65))
+            .scaleEffect(alarmTap ? animation : 1)
+            .offset(x: alarmTap ? -2000 : 0, y: alarmTap ? -650 : 0)
             .animation(
                 .easeInOut(duration: 1.5),
                 value: animation)
