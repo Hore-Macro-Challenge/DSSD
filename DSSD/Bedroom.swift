@@ -14,6 +14,9 @@ struct Bedroom: View {
     @State private var animation = 1.0
     @State private var anchorPoint = UnitPoint(x: 0, y: 0)
     @State private var alarmTap = false
+    @State private var tap = ""
+    @StateObject private var viewModel = StoryViewModel()
+    @State private var disableBtn = true
     let focusPoint = CGPoint(x: 100, y: 100)
     
     var body: some View {
@@ -32,6 +35,7 @@ struct Bedroom: View {
                         if timeRemaining <= 1 {
                             timeRemaining = 0
                             opacity = 0.6
+                            disableBtn = false
                         }
                     }
                 StoryView()
@@ -40,11 +44,14 @@ struct Bedroom: View {
                     //                        .frame(width: size.width/6, height: size.height/3.1)
                     //                        .offset(x:size.width/238.8,y: size.height/18)
                     Button{
-                        alarmTap.toggle()
-                        if alarmTap{
-                            animation += 5
+                        if viewModel.currentIndex == 0 {
+                            if tap == ""{
+                                animation += 5
+                                tap = "alarm"
+                                disableBtn = true
+                            }
                         } else {
-                            animation -= 5
+                            
                         }
 //                        anchorPoint = UnitPoint(x: 0.84, y: 0.65)
                     } label : {
@@ -57,12 +64,12 @@ struct Bedroom: View {
 //                                .easeInOut(duration: 1.5),
 //                                value: animation)
                         
-                    }
+                    }.disabled(disableBtn)
                 }
                 .position(x: size.width/1.28, y: size.height/1.58)
             }
-            .scaleEffect(alarmTap ? animation : 1)
-            .offset(x: alarmTap ? -2000 : 0, y: alarmTap ? -650 : 0)
+            .scaleEffect(tap == "alarm" ? animation : (tap == "lamp" ? animation : (tap == "curtain" ? animation : 1)))
+            .offset(x: tap == "alarm" ? -2000 : (tap == "lamp" ? -2000 : (tap == "curtain" ? -2000 : 0)), y: tap == "alarm" ? -650 : (tap == "lamp" ? -650 : (tap == "curtain" ? -650 : 0)))
             .animation(
                 .easeInOut(duration: 1.5),
                 value: animation)
