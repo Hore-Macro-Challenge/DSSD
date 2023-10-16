@@ -35,14 +35,7 @@ struct selectView: View {
                                         .frame(width: size.width/4.78, height: size.height/2.78, alignment: .center)
                                         .clipped()
                                         .offset(x:0, y:size.height/23.8)
-                                        .scaleEffect(scale)
-                                        .rotationEffect(Angle.degrees(degrees))
-                                        .onAppear{
-                                            withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
-                                                self.scale = 1.7
-                                                self.degrees = 360
-                                            }
-                                        }
+                                        .scaleEffect(1.7)
                                 }
                                 Button{
                                     select = "boy"
@@ -63,14 +56,7 @@ struct selectView: View {
                                         .frame(width: size.width/4.78, height: size.height/2.78, alignment: .center)
                                         .clipped()
                                         .offset(x:0, y:size.height/23.8)
-                                        .scaleEffect(scale)
-                                        .rotationEffect(Angle.degrees(degrees))
-                                        .onAppear{
-                                            withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
-                                                self.scale = 1.7
-                                                self.degrees = 360
-                                            }
-                                        }
+                                        .scaleEffect(1.7)
                                 }
                                 Button{
                                     select = "girl"

@@ -19,14 +19,11 @@ struct storybedroomView: View {
                     Image("light").resizable()
                         .frame(width: size.width/6, height: size.height/3.1)
                         .offset(x:size.width/238.8,y: size.height/18)
-                        .rotationEffect(Angle.degrees(degrees))
-                        .onAppear{
-                            withAnimation(Animation.linear(duration: 2).repeatForever(autoreverses: false)) {
-                                self.degrees += 300
-                            }
-                        }
-                    Image("clock").resizable().frame(width: size.width/10, height: size.height/10)
-                    
+                    Button{
+                        
+                    } label : {
+                        Image("clock").resizable().frame(width: size.width/10, height: size.height/10)
+                    }
                         
                 }.position(x: size.width/1.28, y: size.height/1.58)
             }
