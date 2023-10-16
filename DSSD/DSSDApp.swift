@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct DSSDApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            firstView()
         }
     }
 }
