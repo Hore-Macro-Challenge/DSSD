@@ -26,7 +26,11 @@ struct Bedroom: View {
                     Image("bedroom")
                         .resizable()
                     //                        .aspectRatio(contentMode: .fill)
-                        .frame(width: size.width, height: size.height)
+                        .frame(width: size.width*1.5, height: size.height)
+                    Image("bed")
+                        .resizable()
+                        .frame(width: size.width/0.95, height: size.height/1)
+                        .position(x: size.width/2.15, y: size.height/2.75)
                     Rectangle().opacity(opacity)
                         .onReceive(timer) { _ in
                             timeRemaining -= 1
@@ -40,7 +44,7 @@ struct Bedroom: View {
                             if animation == 1.0 {
                                 animation += 3
                                 lampTap = true
-                                xOffset = Int(size.width/1.1)
+                                xOffset = Int(size.width/0.6)
                                 yOffset = Int(size.height/1.85)
                             } else {
                                 animation -= 3
@@ -63,8 +67,8 @@ struct Bedroom: View {
                             if animation == 1.0 {
                                 animation += 4
                                 alarmTap = true
-                                xOffset = Int((size.width/2) * -1)
-                                yOffset = Int(size.height/2)
+                                xOffset = Int(size.width/2)
+                                yOffset = Int(size.height/2.3)
                             } else {
                                 animation -= 4
                                 alarmTap = false
@@ -74,12 +78,12 @@ struct Bedroom: View {
                         } label : {
                             Image("clock")
                                 .resizable()
-                                .frame(width: size.width/10, height: size.height/10)
+                                .frame(width: size.width/11, height: size.height/11)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                         }
                         .disabled(opacity != 0.6 || lampTap || curtainTap)
                     }
-                    .position(x: size.width/1.66, y: size.height/2.5)
+                    .position(x: size.width/1.66, y: size.height/2.45)
                     VStack{
                         Image("window")
                             .resizable()
@@ -103,7 +107,7 @@ struct Bedroom: View {
                         if animation == 1.0 {
                             animation += 0.7
                             curtainTap = true
-                            xOffset = Int((size.width/2) * -1)
+                            xOffset = Int((size.width/2.7) * -1)
                             yOffset = Int(size.height/4.5)
                         } else {
                             animation -= 0.7
