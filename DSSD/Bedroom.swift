@@ -18,7 +18,7 @@ struct Bedroom: View {
         GeometryReader { geometry in
             let size = geometry.size
             ZStack{
-                Image("Bedroom")
+                Image("bedroom")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: size.width, height: size.height)
@@ -34,13 +34,17 @@ struct Bedroom: View {
                     }
                 StoryView()
                 ZStack{
-                    Image("light").resizable()
-                        .frame(width: size.width/6, height: size.height/3.1)
-                        .offset(x:size.width/238.8,y: size.height/18)
+//                    Image("light").resizable()
+//                        .frame(width: size.width/6, height: size.height/3.1)
+//                        .offset(x:size.width/238.8,y: size.height/18)
                     Button{
                         
                     } label : {
-                        Image("clock").resizable().frame(width: size.width/10, height: size.height/10)
+                        Image("clock")
+                            .resizable()
+                            .frame(width: size.width/10, height: size.height/10)
+                            .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                                    
                     }
                     
                 }.position(x: size.width/1.28, y: size.height/1.58)
