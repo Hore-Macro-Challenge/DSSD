@@ -17,6 +17,8 @@ struct Bedroom: View {
     @State private var alarmTap = false
     @State private var lampTap = false
     @State private var curtainTap = false
+    @State private var position: CGSize = .zero
+    @GestureState private var translation: CGSize = .zero
     
     var body: some View {
         GeometryReader { geometry in
@@ -30,7 +32,7 @@ struct Bedroom: View {
                     Image("bed")
                         .resizable()
                         .frame(width: size.width/0.95, height: size.height/1)
-                        .position(x: size.width/2.15, y: size.height/2.75)
+                        .position(x: size.width/2, y: size.height/1.8)
                     Rectangle().opacity(opacity)
                         .onReceive(timer) { _ in
                             timeRemaining -= 1
@@ -39,13 +41,13 @@ struct Bedroom: View {
                                 opacity = 0.6
                             }
                         }
-                    VStack{
+                    ZStack{
                         Button{
                             if animation == 1.0 {
                                 animation += 3
                                 lampTap = true
-                                xOffset = Int(size.width/0.6)
-                                yOffset = Int(size.height/1.85)
+                                xOffset = Int(size.width/0.65)
+                                yOffset = Int((size.height/4) * -1)
                             } else {
                                 animation -= 3
                                 lampTap = false
@@ -57,18 +59,37 @@ struct Bedroom: View {
                                 .resizable()
                                 .frame(width: size.width/7, height: size.height/3)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
-                            
                         }
                         .disabled(opacity != 0.6 || alarmTap || curtainTap)
+                        .position(x: size.width/3.3, y: size.height/1.82)
+                        Rectangle()
+                            .foregroundColor(.clear)
+                            .frame(width: 5, height: 35)
+                            .background(
+                                Image("tali")
+                                    .resizable()
+                                    .frame(width: 5, height: 35)
+                                    .clipped()
+                            )
+                            .position(x: size.width/3.12, y: size.height/1.7)
+                            .offset(x: 0, y: position.height + translation.height)
+                            .gesture(
+                                DragGesture()
+                                    .updating($translation) { value, state, _ in
+                                        state = value.translation
+                                    }
+                                    .onEnded { value in
+                                        position.height = 0
+                                    }
+                            )
                     }
-                    .position(x: size.width/3.7, y: size.height/2.8)
                     VStack{
                         Button{
                             if animation == 1.0 {
                                 animation += 4
                                 alarmTap = true
-                                xOffset = Int(size.width/2)
-                                yOffset = Int(size.height/2.3)
+                                xOffset = Int(size.width/3)
+                                yOffset = Int((size.height/2.2) * -1)
                             } else {
                                 animation -= 4
                                 alarmTap = false
@@ -83,7 +104,7 @@ struct Bedroom: View {
                         }
                         .disabled(opacity != 0.6 || lampTap || curtainTap)
                     }
-                    .position(x: size.width/1.66, y: size.height/2.45)
+                    .position(x: size.width/1.57, y: size.height/1.68)
                     VStack{
                         Image("window")
                             .resizable()
