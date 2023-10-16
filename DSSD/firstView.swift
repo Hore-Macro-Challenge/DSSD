@@ -43,6 +43,6 @@ struct firstView: View {
     }
 }
 
-#Preview {
-    firstView()
-}
+//#Preview {
+//    firstView()
+//}

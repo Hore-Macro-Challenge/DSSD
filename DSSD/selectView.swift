@@ -90,6 +90,6 @@ struct selectView: View {
     }
 }
 
-#Preview {
-    selectView()
-}
+//#Preview {
+//    selectView()
+//}

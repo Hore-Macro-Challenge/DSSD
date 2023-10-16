@@ -42,6 +42,6 @@ struct secondView: View {
     }
 }
 
-#Preview {
-    secondView()
-}
+//#Preview {
+//    secondView()
+//}
