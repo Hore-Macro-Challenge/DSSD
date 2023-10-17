@@ -26,7 +26,8 @@ struct Bedroom: View {
     @State private var curtainOffset: CGSize = .zero
     @State private var disablealarmBtn = true
     @State private var viewModel = StoryViewModel()
-    
+    @State private var offsetyalarmBtn = 0.0
+
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
@@ -90,38 +91,41 @@ struct Bedroom: View {
                             Image("alarmEffect").resizable().frame(width: alarmEffect ? size.width/7 : size.width/12, height: size.height/11)
                             
                             Button{
-                                if animation == 1.0 {
-                                    animation += 4
-                                    alarmTap = true
-                                    xOffset = Int(size.width/3)
-                                    yOffset = Int((size.height/2.2) * -1)
-                                    opacityHand.toggle()
-                                    disablealarmBtn = false
-                                }
-                            } label : {
-                                Image("clock")
-                                    .resizable()
-                                    .frame(width: size.width/11, height: size.height/14)
-                                    .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
-                            }
-                            .disabled(opacity != 0.6 || lampTap || curtainTap)
-                            
-                            Button{
+                                timeRemaining = 5
                                 self.audioPlayer.stop()
-                                animation -= 4
                                 alarmTap = false
-                                xOffset = 0
-                                yOffset = 0
                                 opacityHand.toggle()
+                                disablealarmBtn = true
                                 alarmEffect = false
+                                withAnimation(.linear(duration: 2)){
+                                    offsetyalarmBtn = -size.width / 43
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                   
+                                   animation -= 4
+                                    xOffset = 0
+                                    yOffset = 0
+                                    
+                                    
+                                    viewModel.moveToNextStory()
+                                    
+                                }
                             } label : {
                                 Image("clockBtn")
                                     .resizable()
                                     .frame(width: size.width/15, height: size.height/100)
                                     
                             }
-                            .offset(x: 0, y: -size.width / 35)
+                            .offset(x: 0, y: offsetyalarmBtn)
                             .disabled(disablealarmBtn)
+                            
+                            
+                                Image("clock")
+                                    .resizable()
+                                    .frame(width: size.width/11, height: size.height/14)
+                                    .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            
+                            
                         }
                     }
                     .position(x: size.width/1.57, y: size.height/1.68)
@@ -176,21 +180,53 @@ struct Bedroom: View {
             }.onAppear{
                 let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
                            self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+                offsetyalarmBtn = -size.width / 35
+            }.onReceive(timer) { _ in
+                if timeRemaining > 0 {
+                    timeRemaining -= 1
+                }else{
+                    if viewModel.getCurrentStory().id == 1 {
+                        withAnimation(.linear(duration: 1)){
+                            opacity = 0.6
+                        }
+                        self.audioPlayer.play()
+                        withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
+                            alarmEffect = true
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            if animation == 1.0 {
+                                animation += 4
+                                alarmTap = true
+                                xOffset = Int(size.width/3)
+                                yOffset = Int((size.height/2.2) * -1)
+                                opacityHand.toggle()
+                                disablealarmBtn = false
+                            }
+                            
+                        }
+                        
+                    }
+                    if viewModel.getCurrentStory().id == 2 {
+                        withAnimation(.linear(duration: 1)){
+                            opacity = 0.6
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            if animation == 1.0 {
+                                animation += 3
+                                lampTap = true
+                                xOffset = Int(size.width/0.65)
+                                yOffset = Int((size.height/4) * -1)
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
             }
             
             StoryView()
-        }.ignoresSafeArea(.all).onReceive(timer) { _ in
-            timeRemaining -= 1
-            if timeRemaining <= 1 {
-                timeRemaining = 0
-                opacity = 0.6
-//                                self.audioPlayer.play()
-                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
-                    alarmEffect = true
-                }
-                
-            }
-        }
+        }.ignoresSafeArea(.all)
         
     }
 }
