@@ -23,6 +23,7 @@ struct Bedroom: View {
     @State private var alarmEffect = false
     @State var audioPlayer: AVAudioPlayer!
     @State private var opacityHand = false
+    @State private var isSwitchOn = true
     
     var body: some View {
         GeometryReader { geometry in
@@ -43,14 +44,14 @@ struct Bedroom: View {
                             if timeRemaining <= 1 {
                                 timeRemaining = 0
                                 opacity = 0.6
-//                                self.audioPlayer.play()
+                                //                                self.audioPlayer.play()
                                 withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
                                     alarmEffect = true
                                 }
                                 
                             }
                         }
-                    ZStack{
+                    VStack{
                         Button{
                             if animation == 1.0 {
                                 animation += 3
@@ -64,33 +65,23 @@ struct Bedroom: View {
                                 yOffset = 0
                             }
                         } label : {
-                            Image("lamp_on")
+                            Image(isSwitchOn ? "lamp_on" : "lamp_off")
                                 .resizable()
                                 .frame(width: size.width/7, height: size.height/3)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                         }
                         .disabled(opacity != 0.6 || alarmTap || curtainTap)
-                        .position(x: size.width/3.3, y: size.height/1.82)
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(width: 5, height: 35)
-                            .background(
-                                Image("tali")
-                                    .resizable()
-                                    .frame(width: 5, height: 35)
-                                    .clipped()
-                            )
-                            .position(x: size.width/3.12, y: size.height/1.7)
-                            .offset(x: 0, y: position.height + translation.height)
-                            .gesture(
-                                DragGesture()
-                                    .updating($translation) { value, state, _ in
-                                        state = value.translation
-                                    }
-                                    .onEnded { value in
-                                        position.height = 0
-                                    }
-                            )
+                        .position(x: size.width/3.5, y: size.height/1.82)
+                        Button{
+                            isSwitchOn.toggle()
+                        } label : {
+                            Image(isSwitchOn ? "on_switch" : "off_switch")
+                                .resizable()
+                                .frame(width: size.width/40, height: size.height/25)
+                        }
+                        .disabled(opacity != 0.6 || alarmTap || curtainTap)
+                        .position(x: size.width/2.95, y: size.height/12)
+                        
                     }
                     VStack{
                         ZStack{
@@ -164,7 +155,7 @@ struct Bedroom: View {
                     value: animation)
             }.onAppear{
                 let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
-                           self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+                self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
             }
             
             StoryView()
