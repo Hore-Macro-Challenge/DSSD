@@ -72,7 +72,7 @@ struct Bedroom: View {
                                 .frame(width: size.width/40, height: size.height/25)
                         }
                         .disabled(opacity != 0.6 || alarmTap || curtainTap)
-                        .position(x: size.width/2.95, y: size.height/12)
+                        .position(x: size.width/2.95, y: size.height/1.7)
                         
                     }
                     VStack{
