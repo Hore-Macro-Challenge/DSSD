@@ -23,6 +23,9 @@ struct Bedroom: View {
     @State private var alarmEffect = false
     @State var audioPlayer: AVAudioPlayer!
     @State private var opacityHand = false
+    @State private var curtainOffset: CGSize = .zero
+    @State private var disablealarmBtn = true
+    @State private var viewModel = StoryViewModel()
     @State private var isSwitchOn = true
     
     var body: some View {
@@ -39,19 +42,8 @@ struct Bedroom: View {
                         .frame(width: size.width/0.95, height: size.height/1)
                         .position(x: size.width/2, y: size.height/1.8)
                     Rectangle().opacity(opacity)
-                        .onReceive(timer) { _ in
-                            timeRemaining -= 1
-                            if timeRemaining <= 1 {
-                                timeRemaining = 0
-                                opacity = 0.6
-                                //                                self.audioPlayer.play()
-                                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
-                                    alarmEffect = true
-                                }
-                                
-                            }
-                        }
-                    VStack{
+                        
+                    ZStack{
                         Button{
                             if animation == 1.0 {
                                 animation += 3
@@ -85,7 +77,7 @@ struct Bedroom: View {
                     }
                     VStack{
                         ZStack{
-                            Image("handSign").scaleEffect(0.15).rotationEffect(Angle(degrees: 195.0)).offset(x:15, y:-65).opacity(opacityHand ? 1 : 0)
+                            Image("handSign").scaleEffect(0.15).rotationEffect(Angle(degrees: 195.0)).offset(x:15, y:-70).opacity(opacityHand ? 1 : 0)
                             Image("alarmEffect").resizable().frame(width: alarmEffect ? size.width/7 : size.width/12, height: size.height/11)
                             
                             Button{
@@ -95,22 +87,32 @@ struct Bedroom: View {
                                     xOffset = Int(size.width/3)
                                     yOffset = Int((size.height/2.2) * -1)
                                     opacityHand.toggle()
-                                } else {
-                                    animation -= 4
-                                    alarmTap = false
-                                    xOffset = 0
-                                    yOffset = 0
-                                    opacityHand.toggle()
+                                    disablealarmBtn = false
                                 }
                             } label : {
                                 Image("clock")
                                     .resizable()
-                                    .frame(width: size.width/11, height: size.height/11)
+                                    .frame(width: size.width/11, height: size.height/14)
                                     .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                             }
                             .disabled(opacity != 0.6 || lampTap || curtainTap)
                             
-                            
+                            Button{
+                                self.audioPlayer.stop()
+                                animation -= 4
+                                alarmTap = false
+                                xOffset = 0
+                                yOffset = 0
+                                opacityHand.toggle()
+                                alarmEffect = false
+                            } label : {
+                                Image("clockBtn")
+                                    .resizable()
+                                    .frame(width: size.width/15, height: size.height/100)
+                                    
+                            }
+                            .offset(x: 0, y: -size.width / 35)
+                            .disabled(disablealarmBtn)
                         }
                     }
                     .position(x: size.width/1.57, y: size.height/1.68)
@@ -128,6 +130,15 @@ struct Bedroom: View {
                             .resizable()
                             .frame(width: size.width/10, height: size.height/2.35)
                             .position(x: size.width/1.29, y: (size.height - size.height/0.86))
+//                            .gesture(
+//                                DragGesture()
+//                                    .onChanged { value in
+//                                        size.width/10 += value.translation.width
+//                                    }
+//                                    .onEnded { _ in
+//                                        
+//                                    }
+//                            )
                         Image("curtain_right")
                             .resizable()
                             .frame(width: size.width/10, height: size.height/2.35)
@@ -159,7 +170,19 @@ struct Bedroom: View {
             }
             
             StoryView()
-        }.ignoresSafeArea()
+        }.ignoresSafeArea(.all).onReceive(timer) { _ in
+            timeRemaining -= 1
+            if timeRemaining <= 1 {
+                timeRemaining = 0
+                opacity = 0.6
+//                                self.audioPlayer.play()
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
+                    alarmEffect = true
+                }
+                
+            }
+        }
+        
     }
 }
 
