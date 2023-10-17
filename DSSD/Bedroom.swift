@@ -22,6 +22,7 @@ struct Bedroom: View {
     @GestureState private var translation: CGSize = .zero
     @State private var alarmEffect = false
     @State var audioPlayer: AVAudioPlayer!
+    @State private var opacityHand = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -42,8 +43,7 @@ struct Bedroom: View {
                             if timeRemaining <= 1 {
                                 timeRemaining = 0
                                 opacity = 0.6
-//                                let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
-//                                            self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+//                                self.audioPlayer.play()
                                 withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
                                     alarmEffect = true
                                 }
@@ -94,6 +94,7 @@ struct Bedroom: View {
                     }
                     VStack{
                         ZStack{
+                            Image("handSign").scaleEffect(0.15).rotationEffect(Angle(degrees: 195.0)).offset(x:15, y:-65).opacity(opacityHand ? 1 : 0)
                             Image("alarmEffect").resizable().frame(width: alarmEffect ? size.width/7 : size.width/12, height: size.height/11)
                             
                             Button{
@@ -102,11 +103,13 @@ struct Bedroom: View {
                                     alarmTap = true
                                     xOffset = Int(size.width/3)
                                     yOffset = Int((size.height/2.2) * -1)
+                                    opacityHand.toggle()
                                 } else {
                                     animation -= 4
                                     alarmTap = false
                                     xOffset = 0
                                     yOffset = 0
+                                    opacityHand.toggle()
                                 }
                             } label : {
                                 Image("clock")
@@ -159,6 +162,9 @@ struct Bedroom: View {
                 .animation(
                     .easeInOut(duration: 1.5),
                     value: animation)
+            }.onAppear{
+                let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
+                           self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
             }
             
             StoryView()
