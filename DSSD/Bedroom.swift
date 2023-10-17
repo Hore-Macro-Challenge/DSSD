@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct Bedroom: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -19,6 +20,8 @@ struct Bedroom: View {
     @State private var curtainTap = false
     @State private var position: CGSize = .zero
     @GestureState private var translation: CGSize = .zero
+    @State private var alarmEffect = false
+    @State var audioPlayer: AVAudioPlayer!
     
     var body: some View {
         GeometryReader { geometry in
@@ -39,6 +42,12 @@ struct Bedroom: View {
                             if timeRemaining <= 1 {
                                 timeRemaining = 0
                                 opacity = 0.6
+//                                let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
+//                                            self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+                                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
+                                    alarmEffect = true
+                                }
+                                
                             }
                         }
                     ZStack{
@@ -84,25 +93,31 @@ struct Bedroom: View {
                             )
                     }
                     VStack{
-                        Button{
-                            if animation == 1.0 {
-                                animation += 4
-                                alarmTap = true
-                                xOffset = Int(size.width/3)
-                                yOffset = Int((size.height/2.2) * -1)
-                            } else {
-                                animation -= 4
-                                alarmTap = false
-                                xOffset = 0
-                                yOffset = 0
+                        ZStack{
+                            Image("alarmEffect").resizable().frame(width: alarmEffect ? size.width/7 : size.width/12, height: size.height/11)
+                            
+                            Button{
+                                if animation == 1.0 {
+                                    animation += 4
+                                    alarmTap = true
+                                    xOffset = Int(size.width/3)
+                                    yOffset = Int((size.height/2.2) * -1)
+                                } else {
+                                    animation -= 4
+                                    alarmTap = false
+                                    xOffset = 0
+                                    yOffset = 0
+                                }
+                            } label : {
+                                Image("clock")
+                                    .resizable()
+                                    .frame(width: size.width/11, height: size.height/11)
+                                    .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                             }
-                        } label : {
-                            Image("clock")
-                                .resizable()
-                                .frame(width: size.width/11, height: size.height/11)
-                                .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            .disabled(opacity != 0.6 || lampTap || curtainTap)
+                            
+                            
                         }
-                        .disabled(opacity != 0.6 || lampTap || curtainTap)
                     }
                     .position(x: size.width/1.57, y: size.height/1.68)
                     VStack{
