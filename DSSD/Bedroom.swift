@@ -42,20 +42,10 @@ struct Bedroom: View {
                         .frame(width: size.width/0.95, height: size.height/1)
                         .position(x: size.width/2, y: size.height/1.8)
                     Rectangle().opacity(opacity)
-                        
+                    
                     ZStack{
                         Button{
-                            if animation == 1.0 {
-                                animation += 3
-                                lampTap = true
-                                xOffset = Int(size.width/0.65)
-                                yOffset = Int((size.height/4) * -1)
-                            } else {
-                                animation -= 3
-                                lampTap = false
-                                xOffset = 0
-                                yOffset = 0
-                            }
+                            
                         } label : {
                             Image(isSwitchOn ? "lamp_on" : "lamp_off")
                                 .resizable()
@@ -66,6 +56,14 @@ struct Bedroom: View {
                         .position(x: size.width/3.5, y: size.height/1.82)
                         Button{
                             isSwitchOn.toggle()
+                            timeRemaining = 5
+                            lampTap = false
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                animation -= 3
+                                xOffset = 0
+                                yOffset = 0
+                                viewModel.moveToNextStory()
+                            }
                         } label : {
                             Image(isSwitchOn ? "on_switch" : "off_switch")
                                 .resizable()
@@ -91,12 +89,10 @@ struct Bedroom: View {
                                     offsetyalarmBtn = -size.width / 43
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                   
-                                   animation -= 4
+                                    
+                                    animation -= 4
                                     xOffset = 0
                                     yOffset = 0
-                                    
-                                    
                                     viewModel.moveToNextStory()
                                     
                                 }
@@ -104,16 +100,16 @@ struct Bedroom: View {
                                 Image("clockBtn")
                                     .resizable()
                                     .frame(width: size.width/15, height: size.height/100)
-                                    
+                                
                             }
                             .offset(x: 0, y: offsetyalarmBtn)
                             .disabled(disablealarmBtn)
                             
                             
-                                Image("clock")
-                                    .resizable()
-                                    .frame(width: size.width/11, height: size.height/14)
-                                    .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            Image("clock")
+                                .resizable()
+                                .frame(width: size.width/11, height: size.height/14)
+                                .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                             
                             
                         }
@@ -133,32 +129,25 @@ struct Bedroom: View {
                             .resizable()
                             .frame(width: size.width/10, height: size.height/2.35)
                             .position(x: size.width/1.29, y: (size.height - size.height/0.86))
-//                            .gesture(
-//                                DragGesture()
-//                                    .onChanged { value in
-//                                        size.width/10 += value.translation.width
-//                                    }
-//                                    .onEnded { _ in
-//                                        
-//                                    }
-//                            )
+                        //                            .gesture(
+                        //                                DragGesture()
+                        //                                    .onChanged { value in
+                        //                                        size.width/10 += value.translation.width
+                        //                                    }
+                        //                                    .onEnded { _ in
+                        //
+                        //                                    }
+                        //                            )
                         Image("curtain_right")
                             .resizable()
                             .frame(width: size.width/10, height: size.height/2.35)
                             .position(x: size.width/1.12, y: (size.height - size.height/0.706))
                     }
                     .onTapGesture {
-                        if animation == 1.0 {
-                            animation += 0.7
-                            curtainTap = true
-                            xOffset = Int((size.width/2.7) * -1)
-                            yOffset = Int(size.height/4.5)
-                        } else {
-                            animation -= 0.7
-                            curtainTap = false
-                            xOffset = 0
-                            yOffset = 0
-                        }
+                        animation -= 0.7
+                        curtainTap = false
+                        xOffset = 0
+                        yOffset = 0
                     }
                     .disabled(opacity != 0.6 || lampTap || alarmTap)
                 }
@@ -169,13 +158,14 @@ struct Bedroom: View {
                     value: animation)
             }.onAppear{
                 let sound = Bundle.main.path(forResource: "alarm", ofType: "mp3")
-                           self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+                self.audioPlayer = try! AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
                 offsetyalarmBtn = -size.width / 35
             }.onReceive(timer) { _ in
                 if timeRemaining > 0 {
                     timeRemaining -= 1
                 }else{
                     if viewModel.getCurrentStory().id == 1 {
+                        print(viewModel.getCurrentStory().text)
                         withAnimation(.linear(duration: 1)){
                             opacity = 0.6
                         }
@@ -197,6 +187,7 @@ struct Bedroom: View {
                         
                     }
                     if viewModel.getCurrentStory().id == 2 {
+                        print(viewModel.getCurrentStory().text)
                         withAnimation(.linear(duration: 1)){
                             opacity = 0.6
                         }
@@ -211,11 +202,42 @@ struct Bedroom: View {
                         }
                         
                     }
+                    if viewModel.getCurrentStory().id == 3 {
+                        print(viewModel.getCurrentStory().text)
+                        withAnimation(.linear(duration: 1)){
+                            opacity = 0.6
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            if animation == 1.0 {
+                                animation += 0.7
+                                curtainTap = true
+                                xOffset = Int((size.width/2.7) * -1)
+                                yOffset = Int(size.height/4.5)
+                            }
+                            
+                        }
+                        
+                    }
                     
                 }
             }
-            
-            StoryView()
+            ZStack(alignment: .leading){
+                Rectangle()
+                    .foregroundColor(.white)
+                    .frame(width: size.width - (size.width/3), height: size.height - (size.height/1.12))
+                    .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+                    .cornerRadius(13)
+                    .background(RoundedRectangle(cornerRadius: 13, style: .continuous)
+                        .stroke(Color(red: 0.5, green: 0.5, blue: 0.5), lineWidth: 5))
+                    .padding(.horizontal, 20)
+                    .position(x: size.width/2, y: size.height/1.12)
+                Image("Person")
+                    .position(x: size.width/6, y: size.height/1.1)
+                Text(viewModel.getCurrentStory().text)
+                    .foregroundColor(.black)
+                    .font(.custom("ComicSansMS-Bold", size: 20))
+                    .position(x: size.width/2, y: size.height/1.12)
+            }
         }.ignoresSafeArea(.all)
         
     }
