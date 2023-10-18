@@ -31,6 +31,8 @@ struct Bedroom: View {
     @State private var curtainleftDrag = 0.0
     @State private var curtainrightDrag = 0.0
     @State private var cekcurtain = 0
+    @State private var done = false
+    @State private var showRecap = false
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
@@ -170,6 +172,7 @@ struct Bedroom: View {
                     }.onChange(of: cekcurtain) { newValue in
                         if newValue == 2{
                             timeRemaining = 5
+                            done = true
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 animation -= 0.7
                                 curtainTap = false
@@ -191,7 +194,7 @@ struct Bedroom: View {
             }.onReceive(timer) { _ in
                 if timeRemaining > 0 {
                     timeRemaining -= 1
-                }else{
+                }else if timeRemaining == 0{
                     if viewModel.getCurrentStory().id == 1 {
                         print(viewModel.getCurrentStory().text)
                         withAnimation(.linear(duration: 1)){
@@ -230,7 +233,7 @@ struct Bedroom: View {
                         }
                         
                     }
-                    if viewModel.getCurrentStory().id == 3 {
+                    if viewModel.getCurrentStory().id == 3 && done != true{
                         print(viewModel.getCurrentStory().text)
                         withAnimation(.linear(duration: 1)){
                             opacity = 0.6
@@ -246,6 +249,13 @@ struct Bedroom: View {
                         }
                         
                     }
+                    if viewModel.getCurrentStory().id == 3 && done == true{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                           showRecap = true
+                        }
+                        
+                    }
+                    timeRemaining -= 1
                     
                 }
             }
@@ -266,6 +276,8 @@ struct Bedroom: View {
                     .font(.custom("ComicSansMS-Bold", size: 20))
                     .position(x: size.width/2, y: size.height/1.12)
             }
+            
+            recapView(show: $showRecap)
         }.ignoresSafeArea(.all)
         
     }
