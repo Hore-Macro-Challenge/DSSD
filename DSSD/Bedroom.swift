@@ -28,6 +28,9 @@ struct Bedroom: View {
     @State private var viewModel = StoryViewModel()
     @State private var isSwitchOn = true
     @State private var offsetyalarmBtn = 0.0
+    @State private var curtainleftDrag = 0.0
+    @State private var curtainrightDrag = 0.0
+    @State private var cekcurtain = 0
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
@@ -128,39 +131,57 @@ struct Bedroom: View {
                         Image("trail")
                             .resizable()
                             .frame(width: size.width/4, height: (size.height - size.height/1.03))
-                            .position(x: size.width/1.19, y: (size.height - size.height/0.91))
-                        Image("curtain_left")
+                            .position(x: size.width/1.20, y: (size.height - size.height/0.91))
+                        Image(curtainleftDrag == -60 ? "curtain_left_open" : "curtain_left")
                             .resizable()
-                            .frame(width: size.width/10, height: size.height/2.35)
-                            .position(x: size.width/1.29, y: (size.height - size.height/0.86))
-//                            .gesture(
-//                                DragGesture()
-//                                    .onChanged { value in
-//                                        size.width/10 += value.translation.width
-//                                    }
-//                                    .onEnded { _ in
-//                                        
-//                                    }
-//                            )
-                        Image("curtain_right")
+                            .frame(width: curtainleftDrag == -60 ? size.width/12 : size.width/10 + curtainleftDrag, height: size.height/2.35)
+                            .position(x: curtainleftDrag == -60 ? size.width/1.32 : size.width/1.29 + curtainleftDrag/2, y: (size.height - size.height/0.86))
+                            .gesture(curtainleftDrag != -60 || viewModel.getCurrentStory().id == 3 ? DragGesture()
+                                .onChanged { value in
+                                    if value.translation.width < 0 {
+                                        let newDragValue =  value.translation.width
+                                                            curtainleftDrag = max(-60, newDragValue)
+                                    }
+                                }
+                                .onEnded { _ in
+                                    curtainleftDrag = curtainleftDrag
+                                    if curtainleftDrag == -60{
+                                        cekcurtain += 1
+                                    }
+                                } : nil
+                            )
+                        Image(curtainrightDrag == 60 ? "curtain_right_open" : "curtain_right")
                             .resizable()
-                            .frame(width: size.width/10, height: size.height/2.35)
-                            .position(x: size.width/1.12, y: (size.height - size.height/0.706))
-                    }
-                    .onTapGesture {
-                        if animation == 1.0 {
-                            animation += 0.7
-                            curtainTap = true
-                            xOffset = Int((size.width/2.7) * -1)
-                            yOffset = Int(size.height/4.5)
-                        } else {
-                            animation -= 0.7
-                            curtainTap = false
-                            xOffset = 0
-                            yOffset = 0
+                            .frame(width: curtainrightDrag == 60 ? size.width/12 : size.width/10 - curtainrightDrag, height: size.height/2.35)
+                            .position(x: curtainrightDrag == 60 ? size.width/1.10  : size.width/1.12 + curtainrightDrag/2, y: (size.height - size.height/0.706))
+                            .gesture(curtainrightDrag != 60 || viewModel.getCurrentStory().id == 3 ? DragGesture()
+                                .onChanged { value in
+                                    if value.translation.width > 0 {
+                                        let newDragValue =  value.translation.width
+                                        curtainrightDrag =  min(60, newDragValue)
+                                    }
+                                }
+                                .onEnded { _ in
+                                    // Reset posisi saat gesture selesai
+                                    curtainrightDrag = curtainrightDrag
+                                    if curtainrightDrag == 60{
+                                        cekcurtain += 1
+                                        print(cekcurtain)
+                                    }
+                                } : nil
+                            )
+                            
+                    }.onChange(of: cekcurtain) { newValue in
+                        if newValue == 2{
+                            timeRemaining = 5
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                animation -= 0.7
+                                curtainTap = false
+                                xOffset = 0
+                                yOffset = 0
+                            }
                         }
                     }
-                    .disabled(opacity != 0.6 || lampTap || alarmTap)
                 }
                 .scaleEffect(animation)
                 .offset(x: CGFloat(xOffset), y: CGFloat(yOffset))
@@ -206,6 +227,21 @@ struct Bedroom: View {
                                 lampTap = true
                                 xOffset = Int(size.width/0.65)
                                 yOffset = Int((size.height/4) * -1)
+                            }
+                            
+                        }
+                        
+                    }
+                    if viewModel.getCurrentStory().id == 3 {
+                        withAnimation(.linear(duration: 1)){
+                            opacity = 0.6
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            if animation == 1.0 {
+                                animation += 0.7
+                                curtainTap = true
+                                xOffset = Int((size.width/2.7) * -1)
+                                yOffset = Int(size.height/4.5)
                             }
                             
                         }
