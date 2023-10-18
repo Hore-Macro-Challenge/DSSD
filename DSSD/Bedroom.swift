@@ -26,8 +26,8 @@ struct Bedroom: View {
     @State private var curtainOffset: CGSize = .zero
     @State private var disablealarmBtn = true
     @State private var viewModel = StoryViewModel()
+    @State private var isSwitchOn = true
     @State private var offsetyalarmBtn = 0.0
-
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
@@ -57,33 +57,23 @@ struct Bedroom: View {
                                 yOffset = 0
                             }
                         } label : {
-                            Image("lamp_on")
+                            Image(isSwitchOn ? "lamp_on" : "lamp_off")
                                 .resizable()
                                 .frame(width: size.width/7, height: size.height/3)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                         }
                         .disabled(opacity != 0.6 || alarmTap || curtainTap)
-                        .position(x: size.width/3.3, y: size.height/1.82)
-                        Rectangle()
-                            .foregroundColor(.clear)
-                            .frame(width: 5, height: 35)
-                            .background(
-                                Image("tali")
-                                    .resizable()
-                                    .frame(width: 5, height: 35)
-                                    .clipped()
-                            )
-                            .position(x: size.width/3.12, y: size.height/1.7)
-                            .offset(x: 0, y: position.height + translation.height)
-                            .gesture(
-                                DragGesture()
-                                    .updating($translation) { value, state, _ in
-                                        state = value.translation
-                                    }
-                                    .onEnded { value in
-                                        position.height = 0
-                                    }
-                            )
+                        .position(x: size.width/3.5, y: size.height/1.82)
+                        Button{
+                            isSwitchOn.toggle()
+                        } label : {
+                            Image(isSwitchOn ? "on_switch" : "off_switch")
+                                .resizable()
+                                .frame(width: size.width/40, height: size.height/25)
+                        }
+                        .disabled(opacity != 0.6 || alarmTap || curtainTap)
+                        .position(x: size.width/2.95, y: size.height/1.7)
+                        
                     }
                     VStack{
                         ZStack{
