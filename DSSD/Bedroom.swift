@@ -97,7 +97,7 @@ struct Bedroom: View {
                                 opacityHand.toggle()
                                 disablealarmBtn = true
                                 alarmEffect = false
-                                withAnimation(.linear(duration: 2)){
+                                withAnimation(.linear(duration: 1)){
                                     offsetyalarmBtn = -size.width / 43
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
