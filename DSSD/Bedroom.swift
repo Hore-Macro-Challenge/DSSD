@@ -10,7 +10,9 @@ import AVFoundation
 
 struct Bedroom: View {
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    let timerShake = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
     @State private var timeRemaining: Double = 5
+    @State private var timeShake: Double = 5
     @State private var opacity = 0.0
     @State private var animation = 1.0
     @State private var xOffset = 0
@@ -33,6 +35,9 @@ struct Bedroom: View {
     @State private var cekcurtain = 0
     @State private var done = false
     @State private var showRecap = false
+    @State private var shake = false
+    @State private var clock = false
+    
     var body: some View {
         GeometryReader { geometry in
             let size = geometry.size
@@ -110,12 +115,22 @@ struct Bedroom: View {
                             .offset(x: 0, y: offsetyalarmBtn)
                             .disabled(disablealarmBtn)
                             
-                            
-                            Image("clock")
-                                .resizable()
-                                .frame(width: size.width/11, height: size.height/14)
-                                .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
-                            
+                            Button {
+                                    clock = true
+                            } label : {
+                                Image("clock")
+                                    .resizable()
+                                    .frame(width: size.width/11, height: size.height/14)
+                                    .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
+                            }.onReceive(timerShake) { _ in
+                                if clock == true && timeShake > 0 {
+                                    timeShake -= 1
+                                    shake.toggle()
+                                } else {
+                                    timeShake = 5
+                                    clock = false
+                                }
+                            }
                             
                         }
                     }
@@ -138,7 +153,7 @@ struct Bedroom: View {
                                 .onChanged { value in
                                     if value.translation.width < 0 {
                                         let newDragValue =  value.translation.width
-                                                            curtainleftDrag = max(-60, newDragValue)
+                                        curtainleftDrag = max(-60, newDragValue)
                                     }
                                 }
                                 .onEnded { _ in
@@ -168,7 +183,7 @@ struct Bedroom: View {
                                     }
                                 } : nil
                             )
-                            
+                        
                     }.onChange(of: cekcurtain) { newValue in
                         if newValue == 2{
                             timeRemaining = 5
@@ -251,7 +266,7 @@ struct Bedroom: View {
                     }
                     if viewModel.getCurrentStory().id == 3 && done == true{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                           showRecap = true
+                            showRecap = true
                         }
                         
                     }
@@ -273,8 +288,12 @@ struct Bedroom: View {
                         .stroke(Color(red: 0.5, green: 0.5, blue: 0.5), lineWidth: 5))
                     .padding(.horizontal, 20)
                     .position(x: size.width/2, y: size.height/1.12)
-                Image("Person")
-                    .position(x: size.width/6, y: size.height/1.1)
+                Image("boy")
+                    .position(x: size.width/6, y: size.height/1.5)
+                        .scaleEffect(x: shake ? -1 : 1, y: 1, anchor: .center)
+                        .offset(x: shake ? -size.width/1.52 : 0, y: 0)
+                Image("body")
+                    .position(x: size.width/5.8, y: size.height/0.995)
                 Text(viewModel.getCurrentStory().text)
                     .foregroundColor(.black)
                     .font(.custom("ComicSansMS-Bold", size: 20))
