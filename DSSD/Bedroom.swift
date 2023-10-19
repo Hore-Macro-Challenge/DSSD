@@ -57,7 +57,7 @@ struct Bedroom: View {
                                 .frame(width: size.width/7, height: size.height/3)
                                 .shadow(color: Color.white.opacity(1), radius: 20, x: 0, y: 0)
                         }
-                        .disabled(opacity != 0.6 || alarmTap || curtainTap)
+                        .disabled(viewModel.getCurrentStory().id != 2 || lampTap != true)
                         .position(x: size.width/3.5, y: size.height/1.82)
                         Button{
                             isSwitchOn.toggle()
@@ -74,7 +74,7 @@ struct Bedroom: View {
                                 .resizable()
                                 .frame(width: size.width/40, height: size.height/25)
                         }
-                        .disabled(opacity != 0.6 || alarmTap || curtainTap)
+                        .disabled(viewModel.getCurrentStory().id != 2 || lampTap != true)
                         .position(x: size.width/2.95, y: size.height/1.7)
                         
                     }
@@ -200,7 +200,7 @@ struct Bedroom: View {
                         withAnimation(.linear(duration: 1)){
                             opacity = 0.6
                         }
-                        self.audioPlayer.play()
+                        
                         withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)){
                             alarmEffect = true
                         }
@@ -257,6 +257,10 @@ struct Bedroom: View {
                     }
                     timeRemaining -= 1
                     
+                }else{
+                    if viewModel.getCurrentStory().id == 1{
+                        self.audioPlayer.play()
+                    }
                 }
             }
             ZStack(alignment: .leading){
