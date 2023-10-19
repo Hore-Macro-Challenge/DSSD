@@ -49,8 +49,8 @@ struct Bedroom: View {
                         .frame(width: size.width*1.5, height: size.height)
                     Image("bed")
                         .resizable()
-                        .frame(width: size.width/0.95, height: size.height/1)
-                        .position(x: size.width/2, y: size.height/1.8)
+                        .frame(width: size.width/2.2, height: size.height/2)
+                        .position(x: size.width/2.11, y: size.height/1.64)
                     Rectangle().opacity(opacity)
                     
                     ZStack{
@@ -144,7 +144,7 @@ struct Bedroom: View {
                         Image("trail")
                             .resizable()
                             .frame(width: size.width/4, height: (size.height - size.height/1.03))
-                            .position(x: size.width/1.20, y: (size.height - size.height/0.91))
+                            .position(x: size.width/1.196, y: (size.height - size.height/0.9))
                         Image(curtainleftDrag == -60 ? "curtain_left_open" : "curtain_left")
                             .resizable()
                             .frame(width: curtainleftDrag == -60 ? size.width/12 : size.width/10 + curtainleftDrag, height: size.height/2.35)

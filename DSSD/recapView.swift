@@ -17,15 +17,15 @@ struct recapView: View {
                 Color.black.opacity(show ? 0.6 : 0).edgesIgnoringSafeArea(.all)
                         
                 ZStack{
-                    Image("scenewin").resizable().frame(width: 310,height: 480).opacity(isAnimate)
-                    HStack{
-                        
-                        Image("starfill").scaleEffect(scaleEff).opacity(isAnimate)
-                        Image("starfill").resizable().frame(width: 80, height: 80).offset(y: -10).scaleEffect(scaleEff).opacity(isAnimate)
-                        Image("starfill").scaleEffect(scaleEff).opacity(isAnimate)
-                        
-                    }.offset(y: -45)
-                }.scaleEffect(1.3).offset(y: -90)
+                    Image("recapBg").scaleEffect(0.9).opacity(isAnimate)
+//                    HStack{
+//                        
+//                        Image("starfill").scaleEffect(scaleEff).opacity(isAnimate)
+//                        Image("starfill").resizable().frame(width: 80, height: 80).offset(y: -10).scaleEffect(scaleEff).opacity(isAnimate)
+//                        Image("starfill").scaleEffect(scaleEff).opacity(isAnimate)
+//                        
+//                    }.offset(y: -96)
+                }.offset(y: -50)
             }
             
         }.onAppear {
