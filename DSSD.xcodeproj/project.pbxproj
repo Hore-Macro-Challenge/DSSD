@@ -22,6 +22,8 @@
 		4E3909522ADBD21F001D9A49 /* secondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E3909512ADBD21F001D9A49 /* secondView.swift */; };
 		4EECE10F2ADE095300D63889 /* alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4EECE10E2ADE095300D63889 /* alarm.mp3 */; };
 		4EF666B12ADFEC7700E51E54 /* recapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF666B02ADFEC7700E51E54 /* recapView.swift */; };
+		4EF666B32AE1B5E200E51E54 /* lamp.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4EF666B22AE1B5E200E51E54 /* lamp.mp3 */; };
+		4EF666B52AE1B64E00E51E54 /* curtain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4EF666B42AE1B64E00E51E54 /* curtain.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		4E3909512ADBD21F001D9A49 /* secondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = secondView.swift; sourceTree = "<group>"; };
 		4EECE10E2ADE095300D63889 /* alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm.mp3; sourceTree = "<group>"; };
 		4EF666B02ADFEC7700E51E54 /* recapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recapView.swift; sourceTree = "<group>"; };
+		4EF666B22AE1B5E200E51E54 /* lamp.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lamp.mp3; sourceTree = "<group>"; };
+		4EF666B42AE1B64E00E51E54 /* curtain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = curtain.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				0BF71D8A2AD8DF8E00805C38 /* Bedroom.swift */,
 				0BF71D942AD92C0900805C38 /* StoryViewModel.swift */,
 				4EECE10E2ADE095300D63889 /* alarm.mp3 */,
+				4EF666B22AE1B5E200E51E54 /* lamp.mp3 */,
+				4EF666B42AE1B64E00E51E54 /* curtain.mp3 */,
 			);
 			path = DSSD;
 			sourceTree = "<group>";
@@ -177,6 +183,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B6692AE2ADD713F0025BB70 /* ComicSansMS-Bold.ttf in Resources */,
+				4EF666B52AE1B64E00E51E54 /* curtain.mp3 in Resources */,
+				4EF666B32AE1B5E200E51E54 /* lamp.mp3 in Resources */,
 				0B6692AF2ADD713F0025BB70 /* ComicSansMS-Regular.ttf in Resources */,
 				4EECE10F2ADE095300D63889 /* alarm.mp3 in Resources */,
 				0BF71D842AD8D1C100805C38 /* Preview Assets.xcassets in Resources */,
