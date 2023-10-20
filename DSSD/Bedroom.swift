@@ -274,20 +274,28 @@ struct Bedroom: View {
                     
                 }else{
                     if viewModel.getCurrentStory().id == 1{
-                        self.audioPlayer.play()
+//                        self.audioPlayer.play()
                     }
                 }
             }
             ZStack(alignment: .leading){
-                Rectangle()
-                    .foregroundColor(.white)
-                    .frame(width: size.width - (size.width/3), height: size.height - (size.height/1.12))
-                    .background(Color(red: 0.9, green: 0.9, blue: 0.9))
-                    .cornerRadius(13)
-                    .background(RoundedRectangle(cornerRadius: 13, style: .continuous)
-                        .stroke(Color(red: 0.5, green: 0.5, blue: 0.5), lineWidth: 5))
-                    .padding(.horizontal, 20)
-                    .position(x: size.width/2, y: size.height/1.12)
+                ZStack{
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .frame(width: size.width - (size.width/3), height: size.height - (size.height/1.12))
+                        .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+                        .cornerRadius(13)
+                        .background(RoundedRectangle(cornerRadius: 13, style: .continuous)
+                            .stroke(Color(red: 0.5, green: 0.5, blue: 0.5), lineWidth: 5))
+                        .padding(.horizontal, 20)
+                        .position(x: size.width/2, y: size.height/1.12)
+                    Button {
+                        viewModel.moveToNextStory()
+                    } label : {
+                        Image(systemName: "arrowshape.right.circle").scaleEffect(2).position(x: size.width/1.25, y: size.height/1.12)
+                    }
+                    
+                }
                 Image("boy")
                     .position(x: size.width/6, y: size.height/1.5)
                         .scaleEffect(x: shake ? -1 : 1, y: 1, anchor: .center)
